@@ -7,6 +7,13 @@ plugins {
 group = 'apiBiblioteca'
 version = '0.0.1'
 
+// **IMPORTANTE: El bloque 'java' debe ir aquí o al principio**
+java {
+    // Si tienes Java 21 instalado:
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21 // Agrega esta línea para asegurar la coherencia
+}
+
 repositories {
     mavenCentral()
 }
@@ -15,9 +22,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-    runtimeOnly 'com.h2database:h2'
+
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+
+    runtimeOnly 'org.postgresql:postgresql'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
