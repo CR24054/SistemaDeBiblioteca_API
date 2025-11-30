@@ -28,7 +28,7 @@ La API será desarrollada por el siguiente equipo:
 | Diana Judith Ventura Erazo      | dianaventura4    | ve24006 |
 | Cristian Mauricio Molina Monzon | CristianMolina27 | mm18192 |
 | Gerson Saul Jiménez Caceres     | JC21002          | jc21002 |
-| Daniel Abraham Cerritos Rivera  | CR24054          | cr24054 |
+| Daniel Abraham Cerritos Rivera  | CR24054          | Cr24054 |
 
 ---
 
