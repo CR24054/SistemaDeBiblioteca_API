@@ -5,13 +5,12 @@ plugins {
 }
 
 group = 'apiBiblioteca'
-version = '0.0.1'
+version = '0.0.9'
 
-// **IMPORTANTE: El bloque 'java' debe ir aquí o al principio**
+
 java {
-    // Si tienes Java 21 instalado:
     sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21 // Agrega esta línea para asegurar la coherencia
+    targetCompatibility = JavaVersion.VERSION_21 
 }
 
 repositories {

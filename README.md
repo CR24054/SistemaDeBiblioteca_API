@@ -1,5 +1,17 @@
 # API REST para Sistema de Gestión de Biblioteca
 
+## Índice
+1. [Descripción del Proyecto](#descripción-del-proyecto)
+2. [Integrantes del Equipo](#integrantes-del-equipo)
+3. [Estructura del Proyecto](#estructura-del-proyecto)
+4. [¿Como utilizar esta api?](#como-utilizar-esta-api)
+5. [Configuración](#configuración)
+6. [Conexión con Postman](#conexión-con-postman)
+7. [Guía de Uso de Endpoints (Rutas)](#guía-de-uso-de-endpoints-rutas)
+8. [Tablas de Comandos para Postman](#tablas-de-comandos-para-postman)
+
+---
+
 ## Descripción del Proyecto
 
 Este es el proyecto de ciclo para la asignatura de Programación Orientada a Objetos (POO) en la carrera de Ingeniería en Desarrollo de Software
@@ -19,22 +31,90 @@ La API será desarrollada por el siguiente equipo:
 | Daniel Abraham Cerritos Rivera  | CR24054          | cr24054 |
 
 ---
+
+## Estructura del Proyecto
+
+El proyecto sigue una arquitectura en capas típica de Spring Boot. A continuación se detalla la estructura de carpetas en `src/main/java/apiBiblioteca`:
+
+```
+apiBiblioteca
+├── controller   # Controladores REST (Endpoints)
+├── dto          # Objetos de Transferencia de Datos (si aplica)
+├── exception    # Manejo de Excepciones Personalizadas
+├── model        # Entidades JPA (Tablas de Base de Datos)
+├── repository   # Interfaces de Repositorio (Acceso a Datos)
+├── service      # Lógica de Negocio
+└── Main.java    # Clase Principal (Punto de Entrada)
+```
+
+### Paquetes y su Propósito
+
+- **`controller`**: Aquí se definen las rutas (endpoints) de la API. Las clases en este paquete reciben las peticiones HTTP (GET, POST, PUT, DELETE) y responden al cliente.
+- **`model`**: Contiene las clases que representan las tablas de la base de datos (Entidades). Por ejemplo, `Libro`, `Usuario`, `Prestamo`.
+- **`repository`**: Interfaces que extienden de `JpaRepository`. Se encargan de interactuar directamente con la base de datos (guardar, buscar, eliminar).
+- **`service`**: Contiene la lógica de negocio. Los controladores llaman a los servicios, y los servicios usan los repositorios.
+- **`exception`**: Manejo de errores para dar respuestas claras cuando algo falla.
+
+### Clases Importantes
+
+- **`Main.java`**: Es el corazón de la aplicación. La anotación `@SpringBootApplication` le dice a Spring que inicie todo el sistema.
+- **`LibroController`, `UsuarioController`, `PrestamoController`**: Son los puntos de acceso para gestionar libros, usuarios y préstamos respectivamente.
+
+---
+
 ## ¿Como utilizar esta api?
 ## Requerimientos
 tienes que tener instalado postman, y postgresql, y java en su ultima version.
 (notamos que en intelliJ idea no funcionaba en algunos dispositivos, en caso de que suceda, usa otro editor de codigo).
 
-## Configurar datos
-En el codigo veras un archivo llamado **application.properties**, alli veras un apartado donde te pide tu usuario de 
-pgAdmin y tu contraseña, **Asegurate de que los datos sean correctos, de lo contrario no te conectara a la base de datos**
+## Configuración
 
-## Configurar Base de Datos
-Tienes que crear una base de datos en pgAdmin llamada **sistemaBibliotecaAPI**
+### Archivo `application.properties`
+
+En el codigo veras un archivo llamado **application.properties** (`src/main/resources/application.properties`), alli veras un apartado donde te pide tu usuario de pgAdmin y tu contraseña.
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/sistemaBibliotecaAPI
+spring.datasource.username=postgres
+spring.datasource.password=TU_CONTRASEÑA_AQUI
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+```
+
+**Asegurate de que los datos sean correctos, de lo contrario no te conectara a la base de datos**
+
+### Conexión con PostgreSQL
+
+1.  **Instalar PostgreSQL y pgAdmin**: Asegúrate de tenerlos instalados y corriendo.
+2.  **Crear Base de Datos**: Tienes que crear una base de datos en pgAdmin llamada **sistemaBibliotecaAPI**.
+3.  **Configurar Credenciales**:
+    - Abre el archivo `src/main/resources/application.properties`.
+    - En `spring.datasource.username`, pon tu usuario de PostgreSQL (usualmente es `postgres`).
+    - En `spring.datasource.password`, **escribe tu contraseña real** de PostgreSQL.
+    - **IMPORTANTE**: Si tu contraseña es incorrecta, la aplicación fallará al iniciar.
 
 ## Funcionamiento
 Para que la Api funcione tienes que ejecutar el main.java y luego irte a postman y poner la siguiente url
 **http://localhost:8080/** y listo!!, ya podras hacer get post y otras cosas usando postman
 
+---
+
+## Conexión con Postman
+
+Postman es la herramienta que usaremos para probar la API, ya que no tenemos una interfaz gráfica (frontend) todavía.
+
+1.  **Iniciar la Aplicación**: Ejecuta la clase `Main.java` en tu IDE. Espera a que en la consola diga "Started Main in...".
+2.  **Abrir Postman**: Crea una nueva colección o una nueva petición (Request).
+3.  **Configurar Petición**:
+    - Selecciona el método (GET, POST, PUT, DELETE).
+    - Ingresa la URL: `http://localhost:8080/` seguido de la ruta (ej. `libros`).
+    - Si es POST o PUT, ve a la pestaña **Body**, selecciona **raw** y luego **JSON**. Ahí pegarás los datos.
+4.  **Enviar**: Dale clic a **Send**.
+
+---
 
 ## Guía de Uso de Endpoints (Rutas)
 
@@ -76,4 +156,36 @@ El método **DELETE** se utiliza para **eliminar permanentemente un recurso** de
 | **Eliminar Libro** | `DELETE /libros/7` | Elimina el registro del libro con ID `7`. |
 | **Eliminar Usuario** | `DELETE /usuarios/3` | Elimina el registro del usuario con ID `3`. |
 
+---
 
+## Tablas de Comandos para Postman
+
+Aquí tienes una guía rápida de todos los comandos disponibles.
+
+### Libros (`/libros`)
+
+| Método | URL | Descripción | Body (JSON) Ejemplo |
+| :--- | :--- | :--- | :--- |
+| **GET** | `http://localhost:8080/libros` | Ver todos los libros | N/A |
+| **POST** | `http://localhost:8080/libros` | Crear un libro | `{ "titulo": "El Principito", "autor": "Antoine de Saint-Exupéry", "isbn": "978-3-16-148410-0", "genero": "Ficción", "disponible": true }` |
+| **GET** | `http://localhost:8080/libros/{id}` | Buscar libro por ID (ej. `/libros/1`) | N/A |
+| **PUT** | `http://localhost:8080/libros/{id}` | Actualizar libro (ej. `/libros/1`) | `{ "titulo": "El Principito (Ed. Especial)", "autor": "Antoine de Saint-Exupéry", "isbn": "978-3-16-148410-0", "genero": "Ficción", "disponible": true }` |
+| **DELETE**| `http://localhost:8080/libros/{id}` | Eliminar libro (ej. `/libros/1`) | N/A |
+
+### Usuarios (`/usuarios`)
+
+| Método | URL | Descripción | Body (JSON) Ejemplo |
+| :--- | :--- | :--- | :--- |
+| **GET** | `http://localhost:8080/usuarios` | Ver todos los usuarios | N/A |
+| **POST** | `http://localhost:8080/usuarios` | Crear un usuario | `{ "nombre": "Juan Perez", "correo": "juan@email.com", "carnet": "JP2024" }` |
+| **GET** | `http://localhost:8080/usuarios/{id}`| Buscar usuario por ID | N/A |
+| **PUT** | `http://localhost:8080/usuarios/{id}`| Actualizar usuario | `{ "nombre": "Juan P. Perez", "correo": "juan.nuevo@email.com", "carnet": "JP2024" }` |
+| **DELETE**| `http://localhost:8080/usuarios/{id}`| Eliminar usuario | N/A |
+
+### Préstamos (`/prestamos`)
+
+| Método | URL | Descripción | Body (JSON) Ejemplo |
+| :--- | :--- | :--- | :--- |
+| **GET** | `http://localhost:8080/prestamos` | Ver todos los préstamos | N/A |
+| **POST** | `http://localhost:8080/prestamos/crear/{idLibro}/{idUsuario}` | Crear préstamo (ej. `/prestamos/crear/1/2`) | N/A (Los IDs van en la URL) |
+| **PUT** | `http://localhost:8080/prestamos/devolver/{idPrestamo}` | Devolver libro (ej. `/prestamos/devolver/5`) | N/A |

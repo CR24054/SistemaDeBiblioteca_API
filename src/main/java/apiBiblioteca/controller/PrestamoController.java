@@ -18,7 +18,7 @@ public class PrestamoController {
 
     @PostMapping("/crear/{idLibro}/{idUsuario}")
     public Prestamo crearPrestamo(@PathVariable Long idLibro, @PathVariable Long idUsuario) {
-        return prestamoService.crearPrestamo(idLibro, idUsuario);
+        return prestamoService.crearPrestamo(idLibro, idUsuario); 
     }
 
     @PutMapping("/devolver/{idPrestamo}")
